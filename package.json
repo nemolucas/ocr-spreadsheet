@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "@google-cloud/vision": "^4.3.2",
-    "docx": "^8.5.0"
+    "docx": "^8.5.0",
+    "xlsx": "^0.18.5"
   },
   "description": "runs an ocr and creates tables in .docx format with the data extracted."
 }
