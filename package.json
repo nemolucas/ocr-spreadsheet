@@ -1,0 +1,16 @@
+{
+  "name": "scanvision",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/vision": "^4.3.2",
+    "docx": "^8.5.0"
+  },
+  "description": "runs an ocr and creates tables in .docx format with the data extracted."
+}
