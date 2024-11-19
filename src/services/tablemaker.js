@@ -12,19 +12,41 @@ const txtToXlsx = (txtFolder, outputFolder) => {
 
             const lines = data.split('\n');
 
+            const columns = ['Quantidade', 'Código', 'Discriminação', 'Unitário', 'Total', 'Data'];
             const rows = [];
-            rows.push(['Quantidade', 'Código', 'Discriminação', 'Unitário', 'Total']);
+            rows.push(columns); 
 
-            lines.forEach(line => {
-                const columns = line.split(/\s+/); 
-                if (columns.length >= 5) {
-                    rows.push(columns); 
+            let currentColumn = 0;
+            let columnData = [];
+
+            lines.forEach((line, index) => {
+                const emptyRow = line.trim();
+
+                if (emptyRow === '') {
+                    if (index > 0 && lines[index - 1].trim() === '') {
+                        columnData.forEach((value, rowIndex) => {
+                            if (!rows[rowIndex + 1]) {
+                                rows[rowIndex + 1] = [];
+                            }
+                            rows[rowIndex + 1][currentColumn] = value;
+                        });
+                        columnData = [];
+                        currentColumn++;
+                    }
+                } else {
+                    columnData.push(emptyRow);
                 }
+            });
+
+            columnData.forEach((value, rowIndex) => {
+                if (!rows[rowIndex + 1]) {
+                    rows[rowIndex + 1] = [];
+                }
+                rows[rowIndex + 1][currentColumn] = value;
             });
 
             const ws = XLSX.utils.aoa_to_sheet(rows);
             const wb = XLSX.utils.book_new();
-
             XLSX.utils.book_append_sheet(wb, ws, path.basename(file, '.txt'));
 
             const outputFilePath = path.join(outputFolder, `${path.basename(file, '.txt')}.xlsx`);
@@ -47,6 +69,5 @@ const txtToXlsx = (txtFolder, outputFolder) => {
 
 const txtFolder = path.join(__dirname, '../..', 'contents', 'text');
 const outputFolder = path.join(__dirname, '../..', 'contents', 'spreadsheets');
-
 
 txtToXlsx(txtFolder, outputFolder);
